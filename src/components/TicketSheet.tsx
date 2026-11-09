@@ -16,7 +16,7 @@ import { colors, font, MARGIN, naira } from '../theme';
 export type Leg = { id: string; matchLabel: string; pickLabel: string; odds: number };
 type Props = {
   legs: Leg[]; stake: number; setStake: (n: number) => void; remaining: number; balance: number;
-  onRemove: (id: string) => void; onClose: () => void; onPlaced: () => void;
+  onRemove: (id: string) => void; onClose: () => void; onPlaced: () => void; onTopUp?: () => void;
 };
 
 const KNOB = 52;
@@ -37,7 +37,7 @@ function Zigzag({ width, flip }: { width: number; flip?: boolean }) {
 
 const Dashed = () => <View style={styles.dashed} />;
 
-export function TicketSheet({ legs, stake, setStake, remaining, balance, onRemove, onClose, onPlaced }: Props) {
+export function TicketSheet({ legs, stake, setStake, remaining, balance, onRemove, onClose, onPlaced, onTopUp }: Props) {
   const { height, width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const reduce = useReducedMotion();
@@ -205,6 +205,11 @@ export function TicketSheet({ legs, stake, setStake, remaining, balance, onRemov
               <Text style={styles.small}>Potential return</Text>
               <Text style={styles.ret}>{naira(shownReturn)}</Text>
               <Text style={[styles.note, (overLimit || overBalance) && { color: '#B3263E' }]}>{message}</Text>
+              {overBalance && onTopUp && (
+                <Pressable onPress={onTopUp} style={styles.link} accessibilityRole="button" accessibilityLabel="Top up wallet">
+                  <Text style={styles.linkText}>Top up wallet</Text>
+                </Pressable>
+              )}
 
               <Animated.View pointerEvents="none" style={[styles.stamp, stampStyle]}>
                 <Text style={styles.stampText}>PLACED</Text>
@@ -280,6 +285,8 @@ const styles = StyleSheet.create({
   chipText: { fontFamily: font.monoMed, fontSize: 13, color: colors.ink },
   ret: { fontFamily: font.bold, fontSize: 34, color: colors.ink },
   note: { fontFamily: mono, fontSize: 12, lineHeight: 18, color: colors.inkSoft },
+  link: { minHeight: 44, justifyContent: 'center' },
+  linkText: { fontFamily: font.monoMed, fontSize: 14, color: colors.ink, textDecorationLine: 'underline' },
   stamp: {
     position: 'absolute', right: 18, top: 70, borderWidth: 4, borderColor: colors.winDeep, borderRadius: 10,
     paddingHorizontal: 14, paddingVertical: 6, alignItems: 'center', backgroundColor: 'rgba(241,243,248,0.9)',

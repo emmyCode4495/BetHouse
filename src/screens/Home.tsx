@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,10 +11,10 @@ import { colors, font, MARGIN, naira } from '../theme';
 
 type Props = {
   matches: Match[]; odds: OddsMap; tick: Tick; picks: Record<string, Market>; balance: number;
-  liveOnly: boolean; onPick: (id: string, mk: Market) => void;
+  liveOnly: boolean; onTopUp: () => void; onPick: (id: string, mk: Market) => void;
 };
 
-export function Home({ matches, odds, tick, picks, balance, liveOnly, onPick }: Props) {
+export function Home({ matches, odds, tick, picks, balance, liveOnly, onTopUp, onPick }: Props) {
   const insets = useSafeAreaInsets();
   const scrollX = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler((e) => { scrollX.value = e.contentOffset.x; });
@@ -28,13 +28,18 @@ export function Home({ matches, odds, tick, picks, balance, liveOnly, onPick }: 
       contentContainerStyle={{ paddingTop: insets.top + 12, paddingBottom: 230 }}
     >
       <View style={styles.header}>
-        <Text style={styles.brand}>Floodlight</Text>
-        <Glass blur={false} radius={22} style={styles.balance}>
-          <View style={styles.balanceIn}>
-            <Ionicons name="wallet-outline" size={18} color={colors.gold} />
-            <Text style={styles.balanceText}>{naira(shownBalance)}</Text>
-          </View>
-        </Glass>
+        <Text style={styles.brand}>
+          <Text style={{ fontFamily: font.regular }}>bet</Text>House
+        </Text>
+        <Pressable onPress={onTopUp} accessibilityRole="button" accessibilityLabel={`Balance ${naira(balance)}, tap to top up`}>
+          <Glass blur={false} radius={22} style={styles.balance}>
+            <View style={styles.balanceIn}>
+              <Ionicons name="wallet-outline" size={18} color={colors.gold} />
+              <Text style={styles.balanceText}>{naira(shownBalance)}</Text>
+              <View style={styles.plus}><Ionicons name="add" size={16} color={colors.ink} /></View>
+            </View>
+          </Glass>
+        </Pressable>
       </View>
 
       <View style={styles.sectionHead}>
@@ -71,6 +76,7 @@ const styles = StyleSheet.create({
   brand: { fontFamily: font.bold, fontSize: 26, color: colors.text, letterSpacing: -0.6 },
   balance: { height: 44 },
   balanceIn: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14 },
+  plus: { width: 22, height: 22, borderRadius: 11, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center', marginRight: -6 },
   balanceText: { fontFamily: font.semi, fontSize: 15, color: colors.text, fontVariant: ['tabular-nums'] },
   sectionHead: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', paddingHorizontal: MARGIN, marginBottom: 12 },
   h2: { fontFamily: font.semi, fontSize: 19, color: colors.text },

@@ -1,29 +1,39 @@
 {
   "expo": {
-    "name": "Floodlight",
-    "slug": "floodlight",
+    "name": "betHouse",
+    "slug": "bethouse",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourname.floodlight"
+      "bundleIdentifier": "com.yourname.bethouse"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0A0E2A",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.yourname.floodlight"
+      "package": "com.yourname.bethouse"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "floodlight",
-    "backgroundColor": "#0A0E2A"
+    "scheme": "bethouse",
+    "backgroundColor": "#06130F",
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#06130F",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 280,
+          "resizeMode": "contain"
+        }
+      ]
+    ]
   }
 }
